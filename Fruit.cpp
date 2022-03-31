@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <time.h>     // pour l’initialisation avec srand
+#include <time.h>     // pour lâ€™initialisation avec srand
 #include <stdlib.h>   // librairie contenant rand()
 
 
