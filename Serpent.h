@@ -27,16 +27,17 @@ public :
     void gauche(const Terrain & t, unsigned int dir);
     void bas(const Terrain & t, unsigned int dir);
 
-    void ajouterCorps(); // changer la taille du serpent
+    void ajouterCorps(unsigned int dir);
     void deplacementCorps();
 
     unsigned int getTaille();
     void setTaille(unsigned int a);
-    unsigned int getX() const;
-    unsigned int getY() const;
+    unsigned int getX(unsigned int rang) const;
+    unsigned int getY(unsigned int rang) const;
+    char getC(unsigned int rang) const;
     unsigned int getDirection() const;
     void setDirection(unsigned int dir);
-    MorceauS* getTab();
+   MorceauS* getTab();
 
 
 };
