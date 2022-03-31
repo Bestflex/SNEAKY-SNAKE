@@ -22,14 +22,52 @@ void txtAff(WinTXT & win, Jeu & j) {
 			win.print(x,y,t.getXY(x,y));
 
     // Affichage du Serpent
-    MorceauS* a = s.getTab();
-	win.print(a[0].x,a[0].y,a[0].c);
+    //MorceauS* a = s.getTab();
+    unsigned int x, y;
+    unsigned int dir = s.getDirection();
+    char c;
+    x=s.getX(0);
+    y=s.getY(0);
+    c=s.getC(0);
+    win.print(x,y,c);
+	for(unsigned int i=1;i< s.getTaille(); i++)
+    {
+        if(dir==0)
+        {
+            x=s.getX(i)-i;
+            y=s.getY(i);
+            c=s.getC(i);
+            win.print(x,y,c);
+        }
+        if(dir==1)
+        {
+            x=s.getX(i);
+            y=s.getY(i)-i;
+            c=s.getC(i);
+            win.print(x,y,c);
+        }
+        if(dir==2)
+        {
+            x=s.getX(i)+i;
+            y=s.getY(i);
+            c=s.getC(i);
+            win.print(x,y,c);
+        }
+        if(dir==3)
+        {
+            x=s.getX(i);
+            y=s.getY(i)+i;
+            c=s.getC(i);
+            win.print(x,y,c);
+        }
+
+    }
 
 	// Affichage du Fruit
 	win.print(f.getX(),f.getY(),f.getCharF());
 
 	win.draw();
-	delete a;
+
 }
 
 void txtBoucle (Jeu & j) {
