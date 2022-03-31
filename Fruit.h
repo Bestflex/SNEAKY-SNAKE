@@ -15,8 +15,8 @@ public:
 
     Fruit();
 
-    void roleFruit(const char f,Serpent & s);
-    void changerFruit(Fruit & f, Terrain & t);
+    void roleFruit(Serpent & s);
+    void changerFruit( Terrain & t);
     unsigned int getX() const;
     unsigned int getY() const;
     char getCharF() const;
