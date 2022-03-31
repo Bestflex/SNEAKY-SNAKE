@@ -1,7 +1,7 @@
 #include "Jeu.h"
 
 Jeu::Jeu () : t(), s(), f() {
-	t.mangeFruit(s.getX(),s.getY());
+	//t.mangeFruit(s.getX(),s.getY());
 }
 
 Terrain& Jeu::getTerrain() {return t;}
@@ -28,13 +28,21 @@ bool Jeu::actionClavier (const char touche) {
 				s.bas(t,a);
 				break;
 	}
-	unsigned int x = s.getX();
-	unsigned int y = s.getY();
-	if((t.getXY(x,y)!='#')||(t.getXY(x,y)!='o')||(t.getXY(x,y)!='@')||(t.getXY(x,y)!=' '))
+	unsigned int sx = s.getX(0);
+	unsigned int sy = s.getY(0);
+	unsigned int fx = f.getX();
+	unsigned int fy = f.getY();
+
+
+	if(sx ==fx && sy==fy)
     {
-        t.mangeFruit(x,y);
+        t.mangeFruit(fx,fy);
+        f.roleFruit(s);
+        s.ajouterCorps(a);
+        f.changerFruit(t);
         return true;
 	}
+    //s.ajouterCorps();
 	return false;
 }
 
