@@ -1,4 +1,4 @@
-all: bin/main_sdl
+all: bin/main_sdl bin/main_txt
 
 bin/main_txt: obj/main_txt.o obj/txtJeu.o obj/winTxt.o obj/Jeu.o obj/Terrain.o obj/Fruit.o obj/Serpent.o obj/Serpent2.o obj/Extra.o
 	g++ -g obj/main_txt.o obj/txtJeu.o obj/winTxt.o obj/Jeu.o obj/Terrain.o obj/Fruit.o obj/Serpent.o obj/Serpent2.o obj/Extra.o  -o bin/test
