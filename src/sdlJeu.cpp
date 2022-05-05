@@ -98,7 +98,7 @@ void Image::setSurface(SDL_Surface * surf) {m_surface = surf;}
 
 // ============= CLASS SDLJEU =============== //
 
-SDLSimple::SDLSimple () : jeu() {
+SDLSimple::SDLSimple () : j() {
     // Initialisation de la SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         cout << "Erreur lors de l'initialisation de la SDL : " << SDL_GetError() << endl;
@@ -129,8 +129,8 @@ SDLSimple::SDLSimple () : jeu() {
     else withSound = true;
 
 	int dimx, dimy;
-	dimx = jeu.getTerrain().getDimX();
-	dimy = jeu.getTerrain().getDimY();
+	dimx = j.getTerrain().getDimX();
+	dimy = j.getTerrain().getDimY();
 	dimx = dimx * TAILLE_SPRITE;
 	dimy = dimy * TAILLE_SPRITE;
 
@@ -145,8 +145,16 @@ SDLSimple::SDLSimple () : jeu() {
     renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
 
     // IMAGES
-    im_serpent.loadFromFile("data/tete.png",renderer);
-    im_serpent2.loadFromFile("data/tete2.png",renderer);
+
+    im_serpentHaut.loadFromFile("data/teteHaut.png",renderer);
+    im_serpentBas.loadFromFile("data/teteBas.png",renderer);
+    im_serpentDroite.loadFromFile("data/teteDroite.png",renderer);
+    im_serpentGauche.loadFromFile("data/teteGauche.png",renderer);
+
+    im_serpent2Haut.loadFromFile("data/tete2Haut.png",renderer);
+    im_serpent2Bas.loadFromFile("data/tete2Bas.png",renderer);
+    im_serpent2Droite.loadFromFile("data/tete2Droite.png",renderer);
+    im_serpent2Gauche.loadFromFile("data/tete2Gauche.png",renderer);
 
     im_mur.loadFromFile("data/mur.png",renderer);
 
@@ -157,8 +165,8 @@ SDLSimple::SDLSimple () : jeu() {
     im_piment.loadFromFile("data/piment.png",renderer);
     im_pobanana.loadFromFile("data/peaubanane.png",renderer);
     im_pommor.loadFromFile("data/pommor.png",renderer);
-
-
+    im_corps1.loadFromFile("data/corps.png",renderer);
+    im_corps2.loadFromFile("data/corps2.png",renderer);
 
     // FONTS
     font = TTF_OpenFont("data/DejaVuSansCondensed.ttf",50);
@@ -196,28 +204,78 @@ SDLSimple::~SDLSimple () {
     SDL_Quit();
 }
 
-void SDLSimple::sdlAff () {
+void SDLSimple::sdlAffSOLO() {
 	//Remplir l'écran de blanc
     SDL_SetRenderDrawColor(renderer, 230, 240, 255, 255);
     SDL_RenderClear(renderer);
 
 	unsigned int x,y;
-    Terrain& ter = jeu.getTerrain();
-    Serpent& s = jeu.getSerpent();
-    Serpent2& s2 = jeu.getSerpent2();
-    Fruit& f = jeu.getFruit();
+    Terrain& ter = j.getTerrain();
+    Serpent& s = j.getSerpent();
+    Fruit& f = j.getFruit();
 
-    // Afficher les sprites des murs et des pastilles
+    // Afficher les sprites des murs
 	for (x=0;x<ter.getDimX();++x)
 		for (y=0;y<ter.getDimY();++y)
 			if (ter.getXY(x,y)=='#')
 				im_mur.draw(renderer,x*TAILLE_SPRITE,y*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE);
 
 	// Afficher le sprite de serpent
-	im_serpent.draw(renderer,s.getX(0)*TAILLE_SPRITE,s.getY(0)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE);
+	for(unsigned int i=0;i<s.getTaille(); i++)
+    {
+        if(s.getDirection()==1) { if(s.getC(i)=='@') { im_serpentHaut.draw(renderer,s.getX(i)*TAILLE_SPRITE,s.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); } }
+        if(s.getDirection()==2) { if(s.getC(i)=='@') { im_serpentGauche.draw(renderer,s.getX(i)*TAILLE_SPRITE,s.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); } }
+        if(s.getDirection()==3) { if(s.getC(i)=='@') { im_serpentBas.draw(renderer,s.getX(i)*TAILLE_SPRITE,s.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); } }
+        if(s.getDirection()==0) { if(s.getC(i)=='@') { im_serpentDroite.draw(renderer,s.getX(i)*TAILLE_SPRITE,s.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); } }
+        if(s.getC(i)=='o') { im_corps1.draw(renderer,s.getX(i)*TAILLE_SPRITE,s.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+    }
 
-	// Afficher le sprite du Fantome
-	im_serpent2.draw(renderer,s2.getX(0)*TAILLE_SPRITE,s2.getY(0)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE);
+	// Afficher le sprite du Fruit
+	if(f.getCharF()=='p') { im_pomme.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+	if(f.getCharF()=='a') { im_piment.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+	if(f.getCharF()=='b') { im_gpomme.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+	if(f.getCharF()=='c') { im_pobanana.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+	if(f.getCharF()=='d') { im_glace.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+	if(f.getCharF()=='8') { im_pommor.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+	if(f.getCharF()=='t') { im_raisin.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+}
+
+void SDLSimple::sdlAffVS() {
+	//Remplir l'écran de blanc
+    SDL_SetRenderDrawColor(renderer, 230, 240, 255, 255);
+    SDL_RenderClear(renderer);
+
+	unsigned int x,y;
+    Terrain& ter = j.getTerrain();
+    Serpent& s = j.getSerpent();
+    Serpent2& s2 = j.getSerpent2();
+    Fruit& f = j.getFruit();
+
+    // Afficher les sprites des murs
+	for (x=0;x<ter.getDimX();++x)
+		for (y=0;y<ter.getDimY();++y)
+			if (ter.getXY(x,y)=='#')
+				im_mur.draw(renderer,x*TAILLE_SPRITE,y*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE);
+
+	// Afficher le sprite de serpent
+	for(unsigned int i=0;i<s.getTaille(); i++)
+    {
+        if(s.getDirection()==1) { if(s.getC(i)=='@') { im_serpentHaut.draw(renderer,s.getX(i)*TAILLE_SPRITE,s.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); } }
+        if(s.getDirection()==2) { if(s.getC(i)=='@') { im_serpentGauche.draw(renderer,s.getX(i)*TAILLE_SPRITE,s.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); } }
+        if(s.getDirection()==3) { if(s.getC(i)=='@') { im_serpentBas.draw(renderer,s.getX(i)*TAILLE_SPRITE,s.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); } }
+        if(s.getDirection()==0) { if(s.getC(i)=='@') { im_serpentDroite.draw(renderer,s.getX(i)*TAILLE_SPRITE,s.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); } }
+        if(s.getC(i)=='o') { im_corps1.draw(renderer,s.getX(i)*TAILLE_SPRITE,s.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+    }
+
+    // Afficher le sprite de serpent2
+	for(unsigned int i=0;i<s2.getTaille(); i++)
+    {
+        if(s2.getDirection()==1) { if(s2.getC(i)=='X') { im_serpent2Haut.draw(renderer,s2.getX(i)*TAILLE_SPRITE,s2.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); } }
+        if(s2.getDirection()==2) { if(s2.getC(i)=='X') { im_serpent2Gauche.draw(renderer,s2.getX(i)*TAILLE_SPRITE,s2.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); } }
+        if(s2.getDirection()==3) { if(s2.getC(i)=='X') { im_serpent2Bas.draw(renderer,s2.getX(i)*TAILLE_SPRITE,s2.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); } }
+        if(s2.getDirection()==0) { if(s2.getC(i)=='X') { im_serpent2Droite.draw(renderer,s2.getX(i)*TAILLE_SPRITE,s2.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); } }
+        if(s2.getC(i)=='+') { im_corps2.draw(renderer,s2.getX(i)*TAILLE_SPRITE,s2.getY(i)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+    }
 
 	// Afficher le sprite du Fruit
 	if(f.getCharF()=='p') { im_pomme.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
@@ -231,68 +289,138 @@ void SDLSimple::sdlAff () {
 
 }
 
-void SDLSimple::sdlBoucle () {
+void SDLSimple::sdlBoucleSOLO() {
 
-    Terrain& t = jeu.getTerrain();
-    Serpent& s = jeu.getSerpent();
-    Serpent2& s2 = jeu.getSerpent2();
-    Fruit& f = jeu.getFruit();
+    Terrain& t = j.getTerrain();
+    Serpent& s = j.getSerpent();
+    Extra& e = j.getExtra();
 
     SDL_Event events;
-	bool quit = false;
-
+	bool quit = j.finPartie();
     Uint32 time = SDL_GetTicks(), nt;
-
-    unsigned int a=s.getDirection();
+    double t1 = e.getTime1();
 
 	// tant que ce n'est pas la fin ...
-	while (!quit) {
+	while (quit) {
 
-        nt = SDL_GetTicks();
+            nt = SDL_GetTicks();
+            unsigned int dir=s.getDirection();
+				if (nt-time>(t1*1000))
+                {
+                    switch (dir)  {
+                        case 2:  s.gauche(t,dir);  break;
+                        case 0:  s.droite(t,dir);  break;
+                        case 1:  s.haut(t,dir);  break;
+                        case 3:  s.bas(t,dir);  break;
+                    }
+                    s.deplacementCorps();
+                    quit=j.finPartie();
+                    j.choixFruit(1);
+                    time = nt;
+                }
 
 		// tant qu'il y a des évenements à traiter (cette boucle n'est pas bloquante)
 		while (SDL_PollEvent(&events)) {
-			if (events.type == SDL_QUIT) quit = true;           // Si l'utilisateur a clique sur la croix de fermeture
+			if (events.type == SDL_QUIT) quit = false;           // Si l'utilisateur a clique sur la croix de fermeture
 			else if (events.type == SDL_KEYDOWN) {              // Si une touche est enfoncee
 			  // bool mangePastille = false;
 				switch (events.key.keysym.scancode) {
-				case SDL_SCANCODE_UP:
-				  jeu.actionClavier('z');
-					break;
-				case SDL_SCANCODE_DOWN:
-				  jeu.actionClavier('s');//	mangePastille = jeu.actionClavier('h');     // car Y inverse
-					break;
-				case SDL_SCANCODE_LEFT:
-				  jeu.actionClavier('q');//	mangePastille = jeu.actionClavier('g');
-					break;
-				case SDL_SCANCODE_RIGHT:
-				  jeu.actionClavier('d');//	mangePastille = jeu.actionClavier('d');
-					break;
-                case SDL_SCANCODE_ESCAPE:
-                case SDL_SCANCODE_Q:
-                    quit = true;
-                    break;
-				default: break;
+                    case SDL_SCANCODE_UP: j.actionClavier('z'); break;
+                    case SDL_SCANCODE_DOWN: j.actionClavier('s'); break;
+                    case SDL_SCANCODE_LEFT: j.actionClavier('q'); break;
+                    case SDL_SCANCODE_RIGHT: j.actionClavier('d'); break;
+                    case SDL_SCANCODE_ESCAPE:
+                    case SDL_SCANCODE_Q: quit = true; break;
+                    default: break;
 				}
-				if (nt-time>500)
-                {
-                    switch (a)  {
-                        case 2:  s.gauche(t,a);  break;
-                        case 0:  s.droite(t,a);  break;
-                        case 1:  s.haut(t,a);  break;
-                        case 3:  s.bas(t,a);  break;
-                    }
-                    time = nt;
-                }
 				/*if ((withSound) && (mangePastille))
                     Mix_PlayChannel(-1,sound,0);*/
 			}
 		}
 
 		// on affiche le jeu sur le buffer cach�
-		sdlAff();
+		sdlAffSOLO();
 
 		// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
         SDL_RenderPresent(renderer);
 	}
 }
+
+void SDLSimple::sdlBoucleVS() {
+
+    Terrain& t = j.getTerrain();
+    Serpent& s = j.getSerpent();
+    Serpent2& s2 = j.getSerpent2();
+    Extra& e = j.getExtra();
+
+    SDL_Event events;
+	bool quit = j.finPartie();
+    Uint32 time = SDL_GetTicks(), nt;
+    Uint32 time2 = SDL_GetTicks();
+    double t1 = e.getTime1();
+    double t2 = e.getTime2();
+
+	// tant que ce n'est pas la fin ...
+	while (quit) {
+
+            nt = SDL_GetTicks();
+            unsigned int dir=s.getDirection();
+            unsigned int dir2=s2.getDirection();
+
+				if (nt-time>(t1*1000))
+                {
+                    switch (dir)  {
+                        case 2:  s.gauche(t,dir);  break;
+                        case 0:  s.droite(t,dir);  break;
+                        case 1:  s.haut(t,dir);  break;
+                        case 3:  s.bas(t,dir);  break;
+                    }
+                    s.deplacementCorps();
+                    quit=j.finPartie();
+                    j.choixFruit(j.getPanier());
+                    time = nt;
+                }
+                if (nt-time2>(t2*1000))
+                {
+                    switch (dir2)  {
+                        case 2:  s2.gauche(t,dir2);  break;
+                        case 0:  s2.droite(t,dir2);  break;
+                        case 1:  s2.haut(t,dir2);  break;
+                        case 3:  s2.bas(t,dir2);  break;
+                    }
+                    s2.deplacementCorps();
+                    quit=j.finPartie();
+                    j.choixFruit(1); //j.choixFruit(j.getPanier());
+                    time2 = nt;
+                }
+
+		// tant qu'il y a des évenements à traiter (cette boucle n'est pas bloquante)
+		while (SDL_PollEvent(&events)) {
+			if (events.type == SDL_QUIT) quit = false;           // Si l'utilisateur a clique sur la croix de fermeture
+			else if (events.type == SDL_KEYDOWN) {              // Si une touche est enfoncee
+				switch (events.key.keysym.scancode) {
+                    case SDL_SCANCODE_UP: j.actionClavier('z'); break;
+                    case SDL_SCANCODE_DOWN: j.actionClavier('s'); break;
+                    case SDL_SCANCODE_LEFT: j.actionClavier('q'); break;
+                    case SDL_SCANCODE_RIGHT: j.actionClavier('d'); break;
+                    case SDL_SCANCODE_W: j.actionClavier('o'); break;
+                    case SDL_SCANCODE_S: j.actionClavier('l'); break;
+                    case SDL_SCANCODE_A: j.actionClavier('k'); break;
+                    case SDL_SCANCODE_D: j.actionClavier('m'); break;
+                    case SDL_SCANCODE_ESCAPE: quit = true; break;
+                    default: break;
+				}
+				/*if ((withSound) && (mangePastille))
+                    Mix_PlayChannel(-1,sound,0);*/
+			}
+		}
+
+		// on affiche le jeu sur le buffer cach�
+		sdlAffVS();
+
+		// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
+        SDL_RenderPresent(renderer);
+	}
+}
+
+
