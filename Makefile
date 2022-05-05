@@ -1,7 +1,7 @@
 all: bin/main_sdl bin/main_txt
 
 bin/main_txt: obj/main_txt.o obj/txtJeu.o obj/winTxt.o obj/Jeu.o obj/Terrain.o obj/Fruit.o obj/Serpent.o obj/Serpent2.o obj/Extra.o
-	g++ -g obj/main_txt.o obj/txtJeu.o obj/winTxt.o obj/Jeu.o obj/Terrain.o obj/Fruit.o obj/Serpent.o obj/Serpent2.o obj/Extra.o  -o bin/test
+	g++ -g obj/main_txt.o obj/txtJeu.o obj/winTxt.o obj/Jeu.o obj/Terrain.o obj/Fruit.o obj/Serpent.o obj/Serpent2.o obj/Extra.o  -o bin/main_txt
 
 bin/main_sdl:  obj/main_sdl.o obj/sdlJeu.o obj/Jeu.o obj/Terrain.o obj/Fruit.o obj/Serpent.o obj/Serpent2.o obj/Extra.o
 	g++ -g obj/main_sdl.o obj/sdlJeu.o obj/Jeu.o obj/Terrain.o obj/Fruit.o obj/Serpent.o obj/Serpent2.o obj/Extra.o -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer -o bin/main_sdl
