@@ -17,7 +17,6 @@ void txtAffSOLO(WinTXT & win, Jeu & j) {
 	Fruit& f = j.getFruit();
 
 	win.clear();
-
     // Affichage du terrain
 	for(unsigned int x=0;x<t.getDimX();++x)
 		for(unsigned int y=0;y<t.getDimY();++y)
@@ -94,7 +93,6 @@ void txtBoucleSOLO (Jeu & j) {
     bool ok=j.finPartie();
 	do {
 	    txtAffSOLO(win,j);
-
         #ifdef _WIN32
         Sleep(100);
 		#else
@@ -119,7 +117,9 @@ void txtBoucleSOLO (Jeu & j) {
             }
             s.deplacementCorps();
             ok=j.finPartie();
-            j.choixFruit(j.getPanier());
+            t.changerTerrain();
+            j.terrainSpecial();
+            j.choixFruit();
             start = std::chrono::steady_clock::now();
             cout << "Score : " << e.getScore1() <<endl;
         }
@@ -149,10 +149,11 @@ void txtBoucleVS (Jeu & j) {
 		usleep(100000);
         #endif // WIN32
 
-		unsigned int a=s.getDirection();
-		unsigned int b=s2.getDirection();
+		unsigned int direction=s.getDirection();
+		unsigned int direction2=s2.getDirection();
 		c = win.getCh();
 		j.actionClavier(c);
+
 		double t1 = e.getTime1();
         double t2 = e.getTime2();
 		auto fin = std::chrono::steady_clock::now();
@@ -160,31 +161,33 @@ void txtBoucleVS (Jeu & j) {
 		std::chrono::duration<double> diff2 = fin - start2;
 		if(diff.count() > t1)
         {
-            switch (a)  {
-                case 2:  s.gauche(t,a);  break;
-                case 0:  s.droite(t,a);  break;
-                case 1:  s.haut(t,a);  break;
-                case 3:  s.bas(t,a);  break;
+            switch (direction)  {
+                case 2:  s.gauche(t,direction);  break;
+                case 0:  s.droite(t,direction);  break;
+                case 1:  s.haut(t,direction);  break;
+                case 3:  s.bas(t,direction);  break;
                 case 'p': break;
             }
             s.deplacementCorps();
             ok=j.finPartie();
-            j.choixFruit(j.getPanier());
+            j.choixFruit();
             start = std::chrono::steady_clock::now();
             cout << "Score serpent1 : " << e.getScore1() <<endl;
         }
         if(diff2.count() > t2)
         {
-            switch (b)  {
-                case 2:  s2.gauche(t,b);  break;
-                case 0:  s2.droite(t,b);  break;
-                case 1:  s2.haut(t,b);  break;
-                case 3:  s2.bas(t,b);  break;
+            switch (direction2)  {
+                case 2:  s2.gauche(t,direction2);  break;
+                case 0:  s2.droite(t,direction2);  break;
+                case 1:  s2.haut(t,direction2);  break;
+                case 3:  s2.bas(t,direction2);  break;
                 case 'p': break;
+
             }
+            if(j.getPanier()==3) {j.jeuAuto();} //jeu contre l'ia si le panier est a 3
             s2.deplacementCorps();
             ok=j.finPartie();
-            j.choixFruit(j.getPanier());
+            j.choixFruit();
             start2 = std::chrono::steady_clock::now();
             cout << "Score serpent 2: " << e.getScore2() <<endl;
         }
@@ -199,7 +202,8 @@ void menu(Jeu & j)
     cout << "Tappez 0 pour le mode Basique" << endl;
     cout << "Tappez 1 pour le mode Arcade" << endl;
     cout << "Tappez 2 pour le mode ArcadeVS" << endl;
-    cout << "Tappez 3 pour fermer la fenetre" << endl;
+    cout << "Tappez 3 pour le mode ArcadeVs l'ia" << endl;
+    cout << "Tappez 4 pour fermer la fenetre" << endl;
     cin >> choix;
     termClear();
 
@@ -209,7 +213,8 @@ void menu(Jeu & j)
         {
             case 0 : j.setPanier(0);txtBoucleSOLO(j); ok=j.finPartie(); break;
             case 1 : j.setPanier(1); txtBoucleSOLO(j); ok=j.finPartie(); break;
-            case 2 : j.setPanier(1); txtBoucleVS(j); ok=j.finPartie(); break;
+            case 2 : j.setPanier(2); txtBoucleVS(j); ok=j.finPartie(); break;
+            case 3 : j.setPanier(3); txtBoucleVS(j); ok=j.finPartie(); break;
             default : cout << "Aucun choix n'a ete fait" << endl;
         }
     }while(ok);
