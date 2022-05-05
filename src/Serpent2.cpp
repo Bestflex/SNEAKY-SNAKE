@@ -10,13 +10,13 @@ using namespace std;
 
 Serpent2::Serpent2()
 {
-    Terrain ter;
     tab[0].c='X';
     tab[1].c='X';
     taille = 2;
+    direction = 2; // 0=droite, 1=haut, 2=gauche, 3=bas
+    Terrain ter;
     tab[0].x = ter.getDimX()-3;
     tab[0].y = ter.getDimY()-3;
-    direction = 2; // 0=droite, 1=haut, 2=gauche, 3=bas
 }
 
 void Serpent2::droite(const Terrain & t, unsigned int dir) {
@@ -51,28 +51,11 @@ void Serpent2::deplacementCorps()
     }
 }
 
-/*
-void Serpent2::bougeAuto(unsigned int dir, const Terrain & t) {
-    int dx [dir] = { 1, 0, -1, 0};
-    int dy [dir] = { 0, 1, 0, -1};
-    unsigned int xtmp,ytmp;
-    for(unsigned int i=0; i<taille;i++)
-    {
-        xtmp = tab[i].x + dx[dir];
-        ytmp = tab[i].y + dy[dir];
-        if (t.estDirectionValide(dir))
-        {
-            tab[i].x = xtmp;
-            tab[i].y = ytmp;
-        }
-    }
-
-}
-*/
-
 bool Serpent2::collisionS()
 {
-    unsigned sx,sy;
+
+    unsigned int sx;
+    unsigned int sy;
     for(unsigned int i=5; i<taille; i++) //5 car on ne peut pas se rentrer dedans avant  une taille de 5
     {
         sx=tab[i].x;
@@ -84,6 +67,21 @@ bool Serpent2::collisionS()
     }
     return false;
 }
+
+void Serpent2::bougeAuto (const Terrain & t) {
+    int dx [4] = { 1, 0, -1, 0};
+    int dy [4] = { 0, 1, 0, -1};
+    int xtmp,ytmp;
+    xtmp = tab[0].x + dx[direction];
+    ytmp = tab[0].y + dy[direction];
+    if (t.collisionT(xtmp,ytmp)==false &&collisionS()==false) {
+        tab[0].x = xtmp;
+        tab[0].y = ytmp;
+        direction = rand()%4;
+    }
+    else direction = rand()%4;
+}
+
 
 unsigned int Serpent2::getTaille()  { return taille; }
 void Serpent2::setTaille(unsigned int a) { taille=a; }
@@ -97,6 +95,6 @@ char Serpent2::getC(unsigned int rang) const { return tab[rang].c; }
 unsigned int Serpent2::getDirection() const { return direction; }
 void Serpent2::setDirection(unsigned int dir) { direction=dir; }
 
-MorceauS2* Serpent2::getTab() {return tab;}
+
 
 
