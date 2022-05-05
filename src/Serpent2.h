@@ -4,6 +4,7 @@
 
 #include "Terrain.h"
 
+
 const int MAX2 = 200;
 
 struct MorceauS2
@@ -22,7 +23,6 @@ private:
 public :
 
     Serpent2();
-
     void droite(const Terrain & t, unsigned int dir);
     void haut(const Terrain & t, unsigned int dir);
     void gauche(const Terrain & t, unsigned int dir);
@@ -30,7 +30,7 @@ public :
 
     void ajouterCorps();
     void deplacementCorps();
-    void bougeAuto(unsigned int dir, const Terrain & t);
+    void bougeAuto(const Terrain & t);
 
     bool collisionS();
 
@@ -43,8 +43,6 @@ public :
     char getC(unsigned int rang) const;
     unsigned int getDirection() const;
     void setDirection(unsigned int dir);
-   MorceauS2* getTab();
-
 
 };
 
