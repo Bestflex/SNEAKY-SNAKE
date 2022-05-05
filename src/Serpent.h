@@ -21,7 +21,6 @@ private:
 public :
 
     Serpent();
-
     void droite(const Terrain & t, unsigned int dir);
     void haut(const Terrain & t, unsigned int dir);
     void gauche(const Terrain & t, unsigned int dir);
