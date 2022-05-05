@@ -14,8 +14,8 @@ Serpent::Serpent()
     tab[0].c='@';
     tab[1].c='@';
     taille = 2;
-    tab[0].x = 2;
-    tab[0].y = 2;
+    tab[0].x=2;
+    tab[0].y=2;
     direction = 0; // 0=droite, 1=haut, 2=gauche, 3=bas
 }
 
