@@ -36,7 +36,7 @@ class SDLSimple {
 
 private :
 
-	Jeu jeu;
+	Jeu j;
 
     SDL_Window * window;
     SDL_Renderer * renderer;
@@ -48,8 +48,18 @@ private :
     Mix_Chunk * sound;
     bool withSound;
 
-    Image im_serpent;
-    Image im_serpent2;
+    Image im_serpentHaut;
+    Image im_serpentBas;
+    Image im_serpentDroite;
+    Image im_serpentGauche;
+
+    Image im_serpent2Haut;
+    Image im_serpent2Bas;
+    Image im_serpent2Droite;
+    Image im_serpent2Gauche;
+
+    Image im_corps1;
+    Image im_corps2;
 
     Image im_mur;
 
@@ -62,14 +72,19 @@ private :
     Image im_pommor;
 
 
+
+
     bool souris;
     bool touche;
 public :
 
-    SDLSimple ();
-    ~SDLSimple ();
-    void sdlBoucle ();
-    void sdlAff ();
+    SDLSimple();
+    ~SDLSimple();
+    void sdlAffSOLO();
+    void sdlAffVS();
+    void sdlBoucleSOLO();
+    void sdlBoucleVS();
+
 
 };
 
