@@ -44,13 +44,13 @@ const char terrain3[10][30]{
 
 const char terrain4[10][30]{
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+"~                          O~",
 "~                           ~",
-"~      ~~~~~~~~~~~~~~~~     ~",
-"~     ~                ~    ~",
-"~     ~                ~    ~",
-"~     ~                ~    ~",
-"~     ~               O~    ~",
-"~      ~~~~~~~~~~~~~~~~     ~",
+"~~~~~~~~~~~~~~~~~~~~~~~~    ~",
+"~             ~             ~",
+"~             ~             ~",
+"~     ~~~~~~~~~~~~~~~~~~~~~~~",
+"~                           ~",
 "~                          0~",
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
 };
@@ -61,60 +61,42 @@ Terrain::Terrain()
 
 	dimx = 30;
 	dimy = 10;
-	choixT = rand()%3;
+	choixT = rand()%4; //le terrain est choisit aléatoirement
 	for(unsigned int x=0;x<dimx;++x)
     {
         for(unsigned int y=0;y<dimy;++y)
         {
-              if (choixT==0){ter[x][y] = terrain1[y][x]; }
-              if (choixT==1){ter[x][y] = terrain2[y][x]; }
-              if (choixT==2){ter[x][y] = terrain3[y][x]; }
+              if (choixT==0){ ter[x][y] = terrain1[y][x]; }
+              if (choixT==1){ ter[x][y] = terrain2[y][x]; }
+              if (choixT==2){ ter[x][y] = terrain3[y][x]; }
+	          if (choixT==3){ ter[x][y] = terrain4[y][x]; }
         }
     }
 }
 
-void Terrain::changerTerrain()
-{
-    for(unsigned int i=0;i<dimx;++i)
-    {
-        for(unsigned int j=0;j<dimy;++j)
-        {
-              if (choixT==0){ter[i][j] = terrain1[j][i]; }
-              if (choixT==1){ter[i][j] = terrain2[j][i]; }
-              if (choixT==2){ter[i][j] = terrain3[j][i]; }
-              if (choixT==3){ter[i][j] = terrain4[j][i]; }
-        }
-    }
-}
 
 bool Terrain::collisionT(unsigned int x,unsigned int y) const //collision avec le terrain
 {
-    if((ter[x][y]=='#')){ return true; }
+    if((ter[x][y]=='#' || ter[x][y]=='~')){ return true; } //si les coordonnées sont sur un caractere # ou ~ on retourne vrai
     return false;
 }
 
-bool Terrain::collisionTSpecial(unsigned int x,unsigned int y) const//collision mur du terrain4
+bool Terrain::collisionTeleporteur1(unsigned int x,unsigned int y) const //collision teleporteur1 du terrain4
 {
-     if((ter[x][y]=='~')){ return true; }
-    return false;
-}
-
-bool Terrain::collisionTeleporteur1(unsigned int x,unsigned int y) const //collision mur du terrain4
-{
-    if(ter[x][y]=='0'){return true;}
+    if(ter[x][y]=='0'){return true;} //si les coordonnées sont celle du caractere '0' on retourne vrai
    return false;
 }
 
-bool Terrain::collisionTeleporteur2(unsigned int x,unsigned int y)const //collision mur du terrain4
+bool Terrain::collisionTeleporteur2(unsigned int x,unsigned int y)const //collision teleporteur2 du terrain4
 {
-    if(ter[x][y]=='O'){return true;}
+    if(ter[x][y]=='O'){return true;} //si les coordonnées sont celle du caractere 'O' on retourne vrai
    return false;
 }
 
-char Terrain::getXY(unsigned int x, unsigned int y) const { return ter[x][y]; }
-unsigned int Terrain::getDimX() const { return dimx; }
-unsigned int Terrain::getDimY() const { return dimy; }
-void Terrain::setChoix(unsigned int a) { choixT = a; }
+char Terrain::getXY(unsigned int x, unsigned int y) const { return ter[x][y]; } // on retourne le caractere du terrain a une cordonnée donner
+unsigned int Terrain::getDimX() const { return dimx; } // on recupere la dimension X du terrain
+unsigned int Terrain::getDimY() const { return dimy; } // on recupere la dimension Y du terrain
+
 
 
 
