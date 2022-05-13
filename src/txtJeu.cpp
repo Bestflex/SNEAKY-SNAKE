@@ -84,7 +84,7 @@ void txtAffVS(WinTXT & win, Jeu & j) {
 void txtBoucleSOLO (Jeu & j) {
 	// Creation d'une nouvelle fenetre en mode texte
 	// => fenetre de dimension et position (WIDTH,HEIGHT,STARTX,STARTY)
-    WinTXT win (j.getConstTerrain().getDimX(),j.getConstTerrain().getDimY());
+    WinTXT win (j.getTerrain().getDimX(),j.getTerrain().getDimY());
     Terrain& t = j.getTerrain();
 	Serpent& s = j.getSerpent();
 	Extra& e = j.getExtra();
@@ -105,7 +105,7 @@ void txtBoucleSOLO (Jeu & j) {
 		double t1 = e.getTime1();
 		auto fin = std::chrono::steady_clock::now();
 		std::chrono::duration<double> diff = fin - start;
-		cout << diff.count() <<endl;
+		//cout << diff.count() <<endl;
 		if(diff.count() > t1)
         {
             switch (a)  {
@@ -117,11 +117,11 @@ void txtBoucleSOLO (Jeu & j) {
             }
             s.deplacementCorps();
             ok=j.finPartie();
-            t.changerTerrain();
-            j.terrainSpecial();
+            j.teleporteur();
             j.choixFruit();
             start = std::chrono::steady_clock::now();
             cout << "Score : " << e.getScore1() <<endl;
+            if(j.getPanier()==1) {cout << "Point de vie serpent1 : " << s.getVie() << endl;}
         }
 
 	} while (ok);
@@ -130,7 +130,7 @@ void txtBoucleSOLO (Jeu & j) {
 void txtBoucleVS (Jeu & j) {
 	// Creation d'une nouvelle fenetre en mode texte
 	// => fenetre de dimension et position (WIDTH,HEIGHT,STARTX,STARTY)
-    WinTXT win (j.getConstTerrain().getDimX(),j.getConstTerrain().getDimY());
+    WinTXT win (j.getTerrain().getDimX(),j.getTerrain().getDimY());
     Terrain& t = j.getTerrain();
 	Serpent& s = j.getSerpent();
 	Serpent2& s2 = j.getSerpent2();
@@ -171,8 +171,10 @@ void txtBoucleVS (Jeu & j) {
             s.deplacementCorps();
             ok=j.finPartie();
             j.choixFruit();
+            j.teleporteur();
             start = std::chrono::steady_clock::now();
             cout << "Score serpent1 : " << e.getScore1() <<endl;
+            cout << "Point de vie serpent1 : " << s.getVie() << endl;
         }
         if(diff2.count() > t2)
         {
@@ -188,9 +190,12 @@ void txtBoucleVS (Jeu & j) {
             s2.deplacementCorps();
             ok=j.finPartie();
             j.choixFruit();
+            j.teleporteur();
             start2 = std::chrono::steady_clock::now();
             cout << "Score serpent 2: " << e.getScore2() <<endl;
+            cout << "Point de vie serpent2 : " << s2.getVie() << endl;
         }
+
 	} while (ok);
 }
 
