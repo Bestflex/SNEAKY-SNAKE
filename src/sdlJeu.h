@@ -27,11 +27,7 @@ public:
     void setSurface(SDL_Surface * surf);
 };
 
-
-
-/**
-    La classe gerant le jeu avec un affichage SDL
-*/
+///La classe gerant le jeu avec un affichage SDL
 class SDLSimple {
 
 private :
@@ -48,6 +44,13 @@ private :
     Mix_Chunk * sound;
     bool withSound;
 
+    Image im_menu;
+    Image im_legende;
+    Image im_defaite;
+    Image im_victoirevs;
+    Image im_victoirevs1;
+    Image im_egalite;
+
     Image im_serpentHaut;
     Image im_serpentBas;
     Image im_serpentDroite;
@@ -62,6 +65,7 @@ private :
     Image im_corps2;
 
     Image im_mur;
+    Image im_mur2;
 
     Image im_pomme;
     Image im_raisin;
@@ -70,21 +74,58 @@ private :
     Image im_piment;
     Image im_pobanana;
     Image im_pommor;
-
-
-
+    Image im_teleporteur;
 
     bool souris;
     bool touche;
 public :
 
+    /**
+     * @brief Constructeur par défaut de la classe:
+       Initialise toute les variables tel que les images, la musique ...
+     */
     SDLSimple();
+
+    /**
+     * @brief Destructeur  de la classe:
+       Reinitialise (detruit) toute les variables tel que les images, la musique ...
+     */
     ~SDLSimple();
+
+    /**
+     * @brief Procedure qui Affiche le mode solo.
+       La Procedure permet d'afficher tous ce qui est necessaire au mode solo grace a la fonction draw,...
+     */
     void sdlAffSOLO();
+
+    /**
+     * @brief Procedure qui Affiche le mode VS.
+       La Procedure permet d'afficher tous ce qui est necessaire au mode vs grace a la fonction draw,...
+     */
     void sdlAffVS();
+
+    /**
+     * @brief Procedure pour la boucle du mode SOLO ( et arcade ) en mode SDL
+     La procedure permet de faire tourner le mode solo dans une boucle qui ne se fini pas tant que le serpent ne meurt pas
+     elle permet egalement le deplacement du serpent grace à une boucle temporelle ainsi que l'affichage des elemnts qui compose le jeu.
+     Cette procedure prend en main tous le jeu en appelant les fonctions necessaire.
+     */
     void sdlBoucleSOLO();
+
+    /**
+     * @brief Procedure pour la boucle du mode VS ( et Vs IA ) en mode SDL
+     La procedure permet de faire tourner le mode vs dans une boucle qui ne se fini pas tant que le serpent ne meurt pas
+     elle permet egalement le deplacement du serpent grace à une boucle temporelle ainsi que l'affichage des elemnts qui compose le jeu.
+     Cette procedure prend en main tous le jeu en appelant les fonctions necessaire.
+     */
     void sdlBoucleVS();
 
+    /**
+     * @brief Procedure pour choisir le mode de jeu en mode SDL
+     On affiche une image de menu à l'utilisateur et en fonction de la position du click de sa souris
+     on appelle les diffenrentes boucles.
+     */
+    void Menu();
 
 };
 
