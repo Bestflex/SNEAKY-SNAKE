@@ -10,90 +10,86 @@ using namespace std;
 
 Serpent2::Serpent2()
 {
-    tab[0].c='X';
+    tab[0].c='X'; // caractere de la tête du serpent on utlilise tab[0] et tab[1] pour eviter probleme d'affichage
     tab[1].c='X';
-    taille = 2;
-    direction = 2; // 0=droite, 1=haut, 2=gauche, 3=bas
-    Terrain ter;
-    tab[0].x = ter.getDimX()-3;
+    taille = 2; // caractere de la tête du serpent on utlilise tab[0] et tab[1] pour eviter probleme d'affichage
+    direction = 2; // direction serpent 0=droite, 1=haut, 2=gauche, 3=bas
+    Terrain ter; // on recupere la class Terrain
+    tab[0].x = ter.getDimX()-3; //coordonnées initiales du serpent, on utlise la class Terrain pour placer le serpent
     tab[0].y = ter.getDimY()-3;
+    vie=0; //vie du serpent, booléen car maximum 1 point de vie
 }
 
 void Serpent2::droite(const Terrain & t, unsigned int dir) {
-	if(dir==0) { tab[0].x = tab[0].x+1; tab[0].y = tab[0].y; }
+	if(dir==0) { tab[0].x = tab[0].x+1; tab[0].y = tab[0].y; } // si la direction est de 0 (droite) on augmente la coordoonée X de la tete du serpent
 }
 
 void Serpent2::haut(const Terrain & t, unsigned int dir) {
-	if(dir==1) { tab[0].x = tab[0].x; tab[0].y = tab[0].y-1;}
+	if(dir==1) { tab[0].x = tab[0].x; tab[0].y = tab[0].y-1;} // si la direction est de 1 (haut) on diminue la coordoonée Y de la tete du serpent
 }
 
+
 void Serpent2::gauche(const Terrain & t, unsigned int dir) {
-	if(dir==2)  { tab[0].x = tab[0].x-1; tab[0].y = tab[0].y; }
+	if(dir==2)  { tab[0].x = tab[0].x-1; tab[0].y = tab[0].y; } // si la direction est de 2 (gauche) on diminue la coordoonée X de la tete du serpent
 }
 
 void Serpent2::bas(const Terrain & t, unsigned int dir) {
-	if(dir==3)  { tab[0].x = tab[0].x; tab[0].y = tab[0].y+1; }
+	if(dir==3)  { tab[0].x = tab[0].x; tab[0].y = tab[0].y+1; } // si la direction est de 3 (bas) on augmente la coordoonée Y de la tete du serpent
 }
 
 void Serpent2::ajouterCorps()
 {
-    for(unsigned int i=2; i<=taille; i++) { tab[i].c='+'; }
+    for(unsigned int i=2; i<=taille; i++) { tab[i].c='+'; } //les caracteres du corps du serpent
 }
-
-/*void Serpent::poserCorps(Terrain & t)*/
 
 void Serpent2::deplacementCorps()
 {
     for(unsigned int i=taille; i>0; i--)
     {
-        tab[i].x = tab[i-1].x;
-        tab[i].y = tab[i-1].y;
+        tab[i].x = tab[i-1].x; //on prend la position X de l'ancienne case occuper par le corps précedent
+        tab[i].y = tab[i-1].y; //on prend la position Y de l'ancienne case occuper par le corps précedent
     }
 }
 
-bool Serpent2::collisionS()
+bool Serpent2::collisionS() // fonction pour savoir si le serpent se rentre dedans
 {
-
-    unsigned int sx;
-    unsigned int sy;
     for(unsigned int i=5; i<taille; i++) //5 car on ne peut pas se rentrer dedans avant  une taille de 5
     {
-        sx=tab[i].x;
-        sy=tab[i].y;
-        if(tab[0].x==sx && tab[0].y==sy) // si coordoonée tete du serpent2 dans coordoone de son corps
+        if(tab[0].x==tab[i].x && tab[0].y==tab[i].y) // si coordoonée tete du serpent2 dans coordoone de son corps
         {
-            return true;
+            return true; // on retourne vrai, il y a collision
         }
     }
     return false;
 }
 
-void Serpent2::bougeAuto (const Terrain & t) {
-    int dx [4] = { 1, 0, -1, 0};
-    int dy [4] = { 0, 1, 0, -1};
-    int xtmp,ytmp;
-    xtmp = tab[0].x + dx[direction];
-    ytmp = tab[0].y + dy[direction];
-    if (t.collisionT(xtmp,ytmp)==false &&collisionS()==false) {
-        tab[0].x = xtmp;
-        tab[0].y = ytmp;
-        direction = rand()%4;
+unsigned int Serpent2::getTaille()  { return taille; } // on retourne la taille du serpent
+void Serpent2::setTaille(unsigned int a) { taille=a; } //on modifie la taille du serpent
+
+unsigned int Serpent2::getX(unsigned int rang) const { return tab[rang].x; } //on retourne la coordonnée X du serpent en fontion du rang
+void Serpent2::setX(unsigned int a) { tab[0].x=a; tab[1].x=a; } //on modifie la coordonnée X de la tete du serpent
+unsigned int Serpent2::getY(unsigned int rang) const { return tab[rang].y; } //on retourne la coordonnée Y du serpent en fontion du rang
+void Serpent2::setY(unsigned int a) { tab[0].y=a; tab[1].y=a; } //on modifie la coordonnée Y de la tete du serpent
+char Serpent2::getC(unsigned int rang) const { return tab[rang].c; } // on recupere le caractere du corps de serpent en fonction de son rang (tete (0 et 1): '@', sinon reste du corps: 'o' )
+
+unsigned int Serpent2::getDirection() const { return direction; } // on retourne la direction du serpent
+void Serpent2::setDirection(unsigned int dir) { direction=dir; } //on modifie la direction du serpent
+
+bool Serpent2::getVie() const { return vie;} //on retourne le nombres de points de vie du serpent (0: pas de vie, 1: un point de vie)
+void Serpent2::setVie(bool v) { vie=v;} //on modifie le bool pour les points de vie
+
+void Serpent2:: setCorpsX(unsigned int a) { //on deplace les coordonnées X du corps (utiliser dans la procedure respawn dans la class Jeu.cpp)
+    for(unsigned int i=2; i<taille; i++)
+    {
+        tab[i].x=a;
     }
-    else direction = rand()%4;
 }
-
-
-unsigned int Serpent2::getTaille()  { return taille; }
-void Serpent2::setTaille(unsigned int a) { taille=a; }
-
-unsigned int Serpent2::getX(unsigned int rang) const { return tab[rang].x; }
-void Serpent2::setX(unsigned int a) { tab[1].x=a; }
-unsigned int Serpent2::getY(unsigned int rang) const { return tab[rang].y; }
-void Serpent2::setY(unsigned int a) { tab[1].y=a; }
-char Serpent2::getC(unsigned int rang) const { return tab[rang].c; }
-
-unsigned int Serpent2::getDirection() const { return direction; }
-void Serpent2::setDirection(unsigned int dir) { direction=dir; }
+void Serpent2:: setCorpsY(unsigned int a) { //on deplace les coordonnées Y du corps (utiliser dans la procedure respawn dans la class Jeu.cpp)
+    for(unsigned int i=2; i<taille; i++)
+    {
+        tab[i].y=a;
+    }
+}
 
 
 
