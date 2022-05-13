@@ -99,6 +99,7 @@ void Image::setSurface(SDL_Surface * surf) {m_surface = surf;}
 // ============= CLASS SDLJEU =============== //
 
 SDLSimple::SDLSimple () : j() {
+
     // Initialisation de la SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         cout << "Erreur lors de l'initialisation de la SDL : " << SDL_GetError() << endl;
@@ -131,8 +132,8 @@ SDLSimple::SDLSimple () : j() {
 	int dimx, dimy;
 	dimx = j.getTerrain().getDimX();
 	dimy = j.getTerrain().getDimY();
-	dimx = dimx * TAILLE_SPRITE;
-	dimy = dimy * TAILLE_SPRITE;
+	dimx = 1250;
+	dimy = dimy *TAILLE_SPRITE;
 
     // Creation de la fenetre
     window = SDL_CreateWindow("SNEAKY SNAKE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, dimx, dimy, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
@@ -146,6 +147,13 @@ SDLSimple::SDLSimple () : j() {
 
     // IMAGES
 
+    im_menu.loadFromFile("data/menu.png",renderer);
+    im_legende.loadFromFile("data/legende2.png",renderer);
+    im_defaite.loadFromFile("data/defaite.png",renderer);
+    im_victoirevs.loadFromFile("data/victoirvs.png",renderer);
+    im_victoirevs1.loadFromFile("data/victoirvs1.png",renderer);
+    im_egalite.loadFromFile("data/egalite.png",renderer);
+
     im_serpentHaut.loadFromFile("data/teteHaut.png",renderer);
     im_serpentBas.loadFromFile("data/teteBas.png",renderer);
     im_serpentDroite.loadFromFile("data/teteDroite.png",renderer);
@@ -156,7 +164,11 @@ SDLSimple::SDLSimple () : j() {
     im_serpent2Droite.loadFromFile("data/tete2Droite.png",renderer);
     im_serpent2Gauche.loadFromFile("data/tete2Gauche.png",renderer);
 
+    im_corps1.loadFromFile("data/corps.png",renderer);
+    im_corps2.loadFromFile("data/corps2.png",renderer);
+
     im_mur.loadFromFile("data/mur.png",renderer);
+    im_mur2.loadFromFile("data/mur2.png",renderer);
 
     im_pomme.loadFromFile("data/pomme.png",renderer);
     im_raisin.loadFromFile("data/raisin.png",renderer);
@@ -165,8 +177,7 @@ SDLSimple::SDLSimple () : j() {
     im_piment.loadFromFile("data/piment.png",renderer);
     im_pobanana.loadFromFile("data/peaubanane.png",renderer);
     im_pommor.loadFromFile("data/pommor.png",renderer);
-    im_corps1.loadFromFile("data/corps.png",renderer);
-    im_corps2.loadFromFile("data/corps2.png",renderer);
+    im_teleporteur.loadFromFile("data/teleporteur.png",renderer);
 
     // FONTS
     font = TTF_OpenFont("data/DejaVuSansCondensed.ttf",50);
@@ -178,7 +189,7 @@ SDLSimple::SDLSimple () : j() {
             exit(1);
 	}
 	font_color.r = 50;font_color.g = 50;font_color.b = 255;
-	font_im.setSurface(TTF_RenderText_Solid(font,"SNEAKY SNAKE",font_color));
+	font_im.setSurface(TTF_RenderText_Solid(font,"sneaky snake " ,font_color));
 	font_im.loadFromCurrentSurface(renderer);
 
     // SONS
@@ -217,8 +228,12 @@ void SDLSimple::sdlAffSOLO() {
     // Afficher les sprites des murs
 	for (x=0;x<ter.getDimX();++x)
 		for (y=0;y<ter.getDimY();++y)
-			if (ter.getXY(x,y)=='#')
-				im_mur.draw(renderer,x*TAILLE_SPRITE,y*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE);
+        {
+            if (ter.getXY(x,y)=='#') { im_mur.draw(renderer,x*TAILLE_SPRITE,y*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+            if (ter.getXY(x,y)=='~') { im_mur2.draw(renderer,x*TAILLE_SPRITE,y*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+            if (ter.getXY(x,y)=='0') { im_teleporteur.draw(renderer,x*TAILLE_SPRITE,y*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+            if (ter.getXY(x,y)=='O') { im_teleporteur.draw(renderer,x*TAILLE_SPRITE,y*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+        }
 
 	// Afficher le sprite de serpent
 	for(unsigned int i=0;i<s.getTaille(); i++)
@@ -238,6 +253,10 @@ void SDLSimple::sdlAffSOLO() {
 	if(f.getCharF()=='d') { im_glace.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
 	if(f.getCharF()=='8') { im_pommor.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
 	if(f.getCharF()=='t') { im_raisin.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+
+	// Afficher la legende
+	im_legende.draw(renderer,29*TAILLE_SPRITE,0*TAILLE_SPRITE,TAILLE_SPRITE*10,TAILLE_SPRITE*10);
+
 }
 
 void SDLSimple::sdlAffVS() {
@@ -254,8 +273,12 @@ void SDLSimple::sdlAffVS() {
     // Afficher les sprites des murs
 	for (x=0;x<ter.getDimX();++x)
 		for (y=0;y<ter.getDimY();++y)
-			if (ter.getXY(x,y)=='#')
-				im_mur.draw(renderer,x*TAILLE_SPRITE,y*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE);
+        {
+            if (ter.getXY(x,y)=='#') { im_mur.draw(renderer,x*TAILLE_SPRITE,y*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+            if (ter.getXY(x,y)=='~') { im_mur2.draw(renderer,x*TAILLE_SPRITE,y*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+            if (ter.getXY(x,y)=='0') { im_teleporteur.draw(renderer,x*TAILLE_SPRITE,y*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+            if (ter.getXY(x,y)=='O') { im_teleporteur.draw(renderer,x*TAILLE_SPRITE,y*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
+        }
 
 	// Afficher le sprite de serpent
 	for(unsigned int i=0;i<s.getTaille(); i++)
@@ -283,9 +306,10 @@ void SDLSimple::sdlAffVS() {
 	if(f.getCharF()=='b') { im_gpomme.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
 	if(f.getCharF()=='c') { im_pobanana.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
 	if(f.getCharF()=='d') { im_glace.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
-	if(f.getCharF()=='8') { im_pommor.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
 	if(f.getCharF()=='t') { im_raisin.draw(renderer,f.getX()*TAILLE_SPRITE,f.getY()*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE); }
 
+	// Afficher la legende
+	im_legende.draw(renderer,29*TAILLE_SPRITE,0*TAILLE_SPRITE,TAILLE_SPRITE*10,TAILLE_SPRITE*10);
 
 }
 
@@ -298,14 +322,15 @@ void SDLSimple::sdlBoucleSOLO() {
     SDL_Event events;
 	bool quit = j.finPartie();
     Uint32 time = SDL_GetTicks(), nt;
-    double t1 = e.getTime1();
+
 
 	// tant que ce n'est pas la fin ...
 	while (quit) {
+            double t1 = e.getTime1();
 
             nt = SDL_GetTicks();
             unsigned int dir=s.getDirection();
-				if (nt-time>(t1*1000))
+				if (nt-time>(t1*1000.0))
                 {
                     switch (dir)  {
                         case 2:  s.gauche(t,dir);  break;
@@ -315,8 +340,12 @@ void SDLSimple::sdlBoucleSOLO() {
                     }
                     s.deplacementCorps();
                     quit=j.finPartie();
-                    j.choixFruit(1);
+                    j.setPanier(1);
+                    SDL_RenderClear(renderer);
+                    j.teleporteur();
+                    j.choixFruit();
                     time = nt;
+
                 }
 
 		// tant qu'il y a des évenements à traiter (cette boucle n'est pas bloquante)
@@ -343,7 +372,8 @@ void SDLSimple::sdlBoucleSOLO() {
 
 		// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
         SDL_RenderPresent(renderer);
-	}
+	}//cout << endl << "Score : " << e.getScore1() <<endl;
+                    //if(j.getPanier()==1) {cout << "Point de vie serpent1 : " << s.getVie() << endl;}
 }
 
 void SDLSimple::sdlBoucleVS() {
@@ -357,11 +387,13 @@ void SDLSimple::sdlBoucleVS() {
 	bool quit = j.finPartie();
     Uint32 time = SDL_GetTicks(), nt;
     Uint32 time2 = SDL_GetTicks();
-    double t1 = e.getTime1();
-    double t2 = e.getTime2();
+
 
 	// tant que ce n'est pas la fin ...
 	while (quit) {
+
+            double t1 = e.getTime1();
+            double t2 = e.getTime2();
 
             nt = SDL_GetTicks();
             unsigned int dir=s.getDirection();
@@ -377,7 +409,8 @@ void SDLSimple::sdlBoucleVS() {
                     }
                     s.deplacementCorps();
                     quit=j.finPartie();
-                    j.choixFruit(j.getPanier());
+                    j.teleporteur();
+                    j.choixFruit();
                     time = nt;
                 }
                 if (nt-time2>(t2*1000))
@@ -388,9 +421,11 @@ void SDLSimple::sdlBoucleVS() {
                         case 1:  s2.haut(t,dir2);  break;
                         case 3:  s2.bas(t,dir2);  break;
                     }
+                    if(j.getPanier()==3) {j.jeuAuto();} //jeu contre l'ia si le panier est a 3
                     s2.deplacementCorps();
                     quit=j.finPartie();
-                    j.choixFruit(1); //j.choixFruit(j.getPanier());
+                    j.teleporteur();
+                    j.choixFruit();
                     time2 = nt;
                 }
 
@@ -421,6 +456,45 @@ void SDLSimple::sdlBoucleVS() {
 		// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
         SDL_RenderPresent(renderer);
 	}
+}
+
+void SDLSimple::Menu() {
+
+    bool quit = true;
+    SDL_Event events;
+    while (quit) {
+            while (SDL_PollEvent(&events)) {
+			if (events.type == SDL_QUIT) quit = false; }
+			switch(events.type)
+			{
+                case SDL_MOUSEBUTTONUP:
+                if (events.button.button == SDL_BUTTON_LEFT)
+                {
+                    if(events.button.x > 75 && events.button.x < 325 && events.button.y > 33 && events.button.y < 88 ) { SDL_RenderClear(renderer); j.setPanier(0); sdlBoucleSOLO();
+                    quit = false; }
+                }
+                if (events.button.button == SDL_BUTTON_LEFT)
+                {
+                    if(events.button.x > 75 && events.button.x < 325 && events.button.y > 99 && events.button.y < 153 ) { SDL_RenderClear(renderer); j.setPanier(1); sdlBoucleSOLO();
+                     quit = false; }
+                }
+                if (events.button.button == SDL_BUTTON_LEFT)
+                {
+                    if(events.button.x > 75 && events.button.x < 325 && events.button.y > 162 && events.button.y < 215 ) { SDL_RenderClear(renderer); j.setPanier(2); sdlBoucleVS();
+                     quit = false; }
+                }
+                if (events.button.button == SDL_BUTTON_LEFT)
+                {
+                    if(events.button.x > 75 && events.button.x < 325 && events.button.y > 225 && events.button.y < 278 ) { SDL_RenderClear(renderer); j.setPanier(3); sdlBoucleVS();
+                     quit = false; }
+                }
+			}
+            im_menu.draw(renderer,0*TAILLE_SPRITE,0*TAILLE_SPRITE,1250,TAILLE_SPRITE*10);
+            SDL_RenderPresent(renderer);
+	}j.messageFin();
+
+
+
 }
 
 
