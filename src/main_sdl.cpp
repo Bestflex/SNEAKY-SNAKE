@@ -2,6 +2,7 @@
 
 int main (int argc, char** argv) {
 	SDLSimple sj;
-	sj.sdlBoucleSOLO();
+	sj.Menu();
 	return 0;
 }
+
