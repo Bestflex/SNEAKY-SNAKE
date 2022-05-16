@@ -85,7 +85,6 @@ void txtBoucleSOLO (Jeu & j) {
 	// Creation d'une nouvelle fenetre en mode texte
 	// => fenetre de dimension et position (WIDTH,HEIGHT,STARTX,STARTY)
     WinTXT win (j.getTerrain().getDimX(),j.getTerrain().getDimY());
-    Terrain& t = j.getTerrain();
 	Serpent& s = j.getSerpent();
 	Extra& e = j.getExtra();
 	char c;
@@ -109,10 +108,10 @@ void txtBoucleSOLO (Jeu & j) {
 		if(diff.count() > t1)
         {
             switch (a)  {
-                case 2:  s.gauche(t,a);  break;
-                case 0:  s.droite(t,a);  break;
-                case 1:  s.haut(t,a);  break;
-                case 3:  s.bas(t,a);  break;
+                case 2:  s.gauche(a);  break;
+                case 0:  s.droite(a);  break;
+                case 1:  s.haut(a);  break;
+                case 3:  s.bas(a);  break;
                 case 'p': break;
             }
             s.deplacementCorps();
@@ -131,7 +130,6 @@ void txtBoucleVS (Jeu & j) {
 	// Creation d'une nouvelle fenetre en mode texte
 	// => fenetre de dimension et position (WIDTH,HEIGHT,STARTX,STARTY)
     WinTXT win (j.getTerrain().getDimX(),j.getTerrain().getDimY());
-    Terrain& t = j.getTerrain();
 	Serpent& s = j.getSerpent();
 	Serpent2& s2 = j.getSerpent2();
 	Extra& e = j.getExtra();
@@ -162,10 +160,10 @@ void txtBoucleVS (Jeu & j) {
 		if(diff.count() > t1)
         {
             switch (direction)  {
-                case 2:  s.gauche(t,direction);  break;
-                case 0:  s.droite(t,direction);  break;
-                case 1:  s.haut(t,direction);  break;
-                case 3:  s.bas(t,direction);  break;
+                case 2:  s.gauche(direction);  break;
+                case 0:  s.droite(direction);  break;
+                case 1:  s.haut(direction);  break;
+                case 3:  s.bas(direction);  break;
                 case 'p': break;
             }
             s.deplacementCorps();
@@ -179,10 +177,10 @@ void txtBoucleVS (Jeu & j) {
         if(diff2.count() > t2)
         {
             switch (direction2)  {
-                case 2:  s2.gauche(t,direction2);  break;
-                case 0:  s2.droite(t,direction2);  break;
-                case 1:  s2.haut(t,direction2);  break;
-                case 3:  s2.bas(t,direction2);  break;
+                case 2:  s2.gauche(direction2);  break;
+                case 0:  s2.droite(direction2);  break;
+                case 1:  s2.haut(direction2);  break;
+                case 3:  s2.bas(direction2);  break;
                 case 'p': break;
 
             }
