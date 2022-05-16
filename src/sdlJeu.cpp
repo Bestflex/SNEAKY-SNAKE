@@ -149,10 +149,6 @@ SDLSimple::SDLSimple () : j() {
 
     im_menu.loadFromFile("data/menu.png",renderer);
     im_legende.loadFromFile("data/legende2.png",renderer);
-    im_defaite.loadFromFile("data/defaite.png",renderer);
-    im_victoirevs.loadFromFile("data/victoirvs.png",renderer);
-    im_victoirevs1.loadFromFile("data/victoirvs1.png",renderer);
-    im_egalite.loadFromFile("data/egalite.png",renderer);
 
     im_serpentHaut.loadFromFile("data/teteHaut.png",renderer);
     im_serpentBas.loadFromFile("data/teteBas.png",renderer);
@@ -315,7 +311,6 @@ void SDLSimple::sdlAffVS() {
 
 void SDLSimple::sdlBoucleSOLO() {
 
-    Terrain& t = j.getTerrain();
     Serpent& s = j.getSerpent();
     Extra& e = j.getExtra();
 
@@ -333,10 +328,10 @@ void SDLSimple::sdlBoucleSOLO() {
 				if (nt-time>(t1*1000.0))
                 {
                     switch (dir)  {
-                        case 2:  s.gauche(t,dir);  break;
-                        case 0:  s.droite(t,dir);  break;
-                        case 1:  s.haut(t,dir);  break;
-                        case 3:  s.bas(t,dir);  break;
+                        case 2:  s.gauche(dir);  break;
+                        case 0:  s.droite(dir);  break;
+                        case 1:  s.haut(dir);  break;
+                        case 3:  s.bas(dir);  break;
                     }
                     s.deplacementCorps();
                     quit=j.finPartie();
@@ -378,7 +373,6 @@ void SDLSimple::sdlBoucleSOLO() {
 
 void SDLSimple::sdlBoucleVS() {
 
-    Terrain& t = j.getTerrain();
     Serpent& s = j.getSerpent();
     Serpent2& s2 = j.getSerpent2();
     Extra& e = j.getExtra();
@@ -402,10 +396,10 @@ void SDLSimple::sdlBoucleVS() {
 				if (nt-time>(t1*1000))
                 {
                     switch (dir)  {
-                        case 2:  s.gauche(t,dir);  break;
-                        case 0:  s.droite(t,dir);  break;
-                        case 1:  s.haut(t,dir);  break;
-                        case 3:  s.bas(t,dir);  break;
+                        case 2:  s.gauche(dir);  break;
+                        case 0:  s.droite(dir);  break;
+                        case 1:  s.haut(dir);  break;
+                        case 3:  s.bas(dir);  break;
                     }
                     s.deplacementCorps();
                     quit=j.finPartie();
@@ -416,10 +410,10 @@ void SDLSimple::sdlBoucleVS() {
                 if (nt-time2>(t2*1000))
                 {
                     switch (dir2)  {
-                        case 2:  s2.gauche(t,dir2);  break;
-                        case 0:  s2.droite(t,dir2);  break;
-                        case 1:  s2.haut(t,dir2);  break;
-                        case 3:  s2.bas(t,dir2);  break;
+                        case 2:  s2.gauche(dir2);  break;
+                        case 0:  s2.droite(dir2);  break;
+                        case 1:  s2.haut(dir2);  break;
+                        case 3:  s2.bas(dir2);  break;
                     }
                     if(j.getPanier()==3) {j.jeuAuto();} //jeu contre l'ia si le panier est a 3
                     s2.deplacementCorps();
