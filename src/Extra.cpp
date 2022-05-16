@@ -1,7 +1,6 @@
 #include "Extra.h"
-
 #include <iostream>
-
+#include <cassert>
 Extra::Extra()
 {
     time1 = 0.2;
@@ -22,3 +21,12 @@ void Extra::setScore1(unsigned int a) { score1=a; }
 
 unsigned int Extra::getScore2() const { return score2; }
 void Extra::setScore2(unsigned int a) { score2=a; }
+
+void Extra::ETestRegression()
+{
+    Extra e;
+    assert(e.score1==0);
+    assert(e.score2==0);
+    assert(e.time1==(0.2));
+    assert(e.time2==(0.2));
+}
