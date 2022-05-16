@@ -1,8 +1,6 @@
 #ifndef _SERPENT_H
 #define _SERPENT_H
 
-#include "Terrain.h"
-
 const int MAX = 200;
 
 /// Structure MorceauS
@@ -38,34 +36,30 @@ public :
     /**
      * @brief Procedure qui deplace le serpent à droite.
        La Procedure permet de quand elle est appelée de deplacer chaque membre du serpent d'une case vers la droite.
-       @param Terrain : la classe Terrain
        @param dir : entié superieur ou egal à 0
      */
-    void droite(const Terrain & t, unsigned int dir);
+    void droite(unsigned int dir);
 
     /**
      * @brief Procedure qui deplace le serpent à haut.
        La Procedure permet de quand elle est appelée de deplacer chaque membre du serpent d'une case vers la haut.
-       @param Terrain : la classe Terrain
        @param dir : entié superieur ou egal à 0
      */
-    void haut(const Terrain & t, unsigned int dir);
+    void haut(unsigned int dir);
 
     /**
      * @brief Procedure qui deplace le serpent à gauche.
        La Procedure permet de quand elle est appelée de deplacer chaque membre du serpent d'une case vers la gauche.
-       @param Terrain : la classe Terrain
        @param dir : entié superieur ou egal à 0
      */
-    void gauche(const Terrain & t, unsigned int dir);
+    void gauche(unsigned int dir);
 
     /**
      * @brief Procedure qui deplace le serpent à bas.
        La Procedure permet de quand elle est appelée de deplacer chaque membre du serpent d'une case vers la bas.
-       @param Terrain : la classe Terrain
        @param dir : entié superieur ou egal à 0
      */
-    void bas(const Terrain & t, unsigned int dir);
+    void bas(unsigned int dir);
 
     /**
      * @brief Procedure qui ajoute un corps au serpent.
@@ -153,6 +147,12 @@ public :
      * @brief Mutateur : modifie la coordonnée y du corps du Serpent
      */
     void setCorpsY(unsigned int y);
+
+    /**
+     * @brief Procedure qui teste le fonctionnement du code.
+       Permet de tester qu'à chaque fois que le logiciel est modifié, que les choses qui fonctionnaient avant fonctionnent toujours.
+     */
+    void STestRegression();
 
 };
 
