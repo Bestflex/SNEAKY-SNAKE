@@ -61,6 +61,12 @@ public:
      * @brief Mutateur : modifie le score du deuxieme Serpent
      */
     void setScore2(unsigned int a);
+
+    /**
+     * @brief Procedure qui teste le fonctionnement du code.
+       Permet de tester qu'à chaque fois que le logiciel est modifié, que les choses qui fonctionnaient avant fonctionnent toujours.
+     */
+    void ETestRegression();
 };
 
 #endif // Extra.h
