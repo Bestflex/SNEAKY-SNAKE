@@ -1,5 +1,5 @@
 #include "Serpent2.h"
-
+#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -17,23 +17,25 @@ Serpent2::Serpent2()
     Terrain ter; // on recupere la class Terrain
     tab[0].x = ter.getDimX()-3; //coordonnées initiales du serpent, on utlise la class Terrain pour placer le serpent
     tab[0].y = ter.getDimY()-3;
+    tab[1].x = ter.getDimX()-3; //coordonnées initiales du serpent, on utlise la class Terrain pour placer le serpent
+    tab[1].y = ter.getDimY()-3;
     vie=0; //vie du serpent, booléen car maximum 1 point de vie
 }
 
-void Serpent2::droite(const Terrain & t, unsigned int dir) {
+void Serpent2::droite(unsigned int dir) {
 	if(dir==0) { tab[0].x = tab[0].x+1; tab[0].y = tab[0].y; } // si la direction est de 0 (droite) on augmente la coordoonée X de la tete du serpent
 }
 
-void Serpent2::haut(const Terrain & t, unsigned int dir) {
+void Serpent2::haut(unsigned int dir) {
 	if(dir==1) { tab[0].x = tab[0].x; tab[0].y = tab[0].y-1;} // si la direction est de 1 (haut) on diminue la coordoonée Y de la tete du serpent
 }
 
 
-void Serpent2::gauche(const Terrain & t, unsigned int dir) {
+void Serpent2::gauche(unsigned int dir) {
 	if(dir==2)  { tab[0].x = tab[0].x-1; tab[0].y = tab[0].y; } // si la direction est de 2 (gauche) on diminue la coordoonée X de la tete du serpent
 }
 
-void Serpent2::bas(const Terrain & t, unsigned int dir) {
+void Serpent2::bas(unsigned int dir) {
 	if(dir==3)  { tab[0].x = tab[0].x; tab[0].y = tab[0].y+1; } // si la direction est de 3 (bas) on augmente la coordoonée Y de la tete du serpent
 }
 
@@ -89,6 +91,29 @@ void Serpent2:: setCorpsY(unsigned int a) { //on deplace les coordonnées Y du co
     {
         tab[i].y=a;
     }
+}
+
+void Serpent2::S2TestRegression()
+{
+    Serpent2 s2;
+    assert(s2.taille>0);
+    assert(s2.taille==2);
+    assert(s2.direction==2);
+    assert(s2.vie==0);
+    assert((s2.tab[0].x>0)&&(s2.tab[0].x<30));
+    assert((s2.tab[0].y>0)&&(s2.tab[0].y<10));
+    s2.gauche(2);
+    assert(s2.tab[0].x==26);
+    assert(s2.tab[0].y==7);
+    s2.haut(1);
+    assert(s2.tab[0].x==26);
+    assert(s2.tab[0].y==6);
+    s2.droite(0);
+    assert(s2.tab[0].x==27);
+    assert(s2.tab[0].y==6);
+    s2.bas(3);
+    assert(s2.tab[0].x==27);
+    assert(s2.tab[0].y==7);
 }
 
 
