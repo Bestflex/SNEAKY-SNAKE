@@ -1,6 +1,7 @@
 #include "Jeu.h"
 #include <iostream>
 #include <time.h>
+#include <cassert>
 using namespace std;
 Jeu::Jeu() : t(), s(), s2(), f(), e() { gagnantVS =0; /*egalite*/ panier=0; } // Constructeur par default
 
@@ -298,3 +299,9 @@ int Jeu::getGagnant(){ return gagnantVS; } //on retourne le gagnant du 1 contre 
 unsigned int Jeu::getPanier() { return panier; } // on retourne l'entier du panier (savoir quel mode de jeux on joue)
 void Jeu::setPanier(unsigned int x) { panier=x; } // on modifie le panier (modife le mode de jeux auquel on joue)
 
+void Jeu::JTestRegression()
+{
+    Jeu j;
+    assert(j.gagnantVS==0);
+    assert(j.panier==0);
+}
