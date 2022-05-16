@@ -1,9 +1,7 @@
 #ifndef _SERPENT2_H
 #define _SERPENT2_H
 
-
 #include "Terrain.h"
-
 
 const int MAX2 = 200;
 
@@ -41,34 +39,30 @@ public :
     /**
      * @brief Procedure qui deplace le serpent2 à droite.
        La Procedure permet de quand elle est appelée de deplacer chaque membre du serpent2 d'une case vers la droite.
-       @param Terrain : la classe Terrain
        @param dir : entié superieur ou egal à 0
      */
-    void droite(const Terrain & t, unsigned int dir);
+    void droite(unsigned int dir);
 
     /**
      * @brief Procedure qui deplace le serpent2 à haut.
        La Procedure permet de quand elle est appelée de deplacer chaque membre du serpent2 d'une case vers la haut.
-       @param Terrain : la classe Terrain
        @param dir : entié superieur ou egal à 0
      */
-    void haut(const Terrain & t, unsigned int dir);
+    void haut(unsigned int dir);
 
     /**
      * @brief Procedure qui deplace le serpent2 à gauche.
        La Procedure permet de quand elle est appelée de deplacer chaque membre du serpent2 d'une case vers la gauche.
-       @param Terrain : la classe Terrain
        @param dir : entié superieur ou egal à 0
      */
-    void gauche(const Terrain & t, unsigned int dir);
+    void gauche(unsigned int dir);
 
     /**
      * @brief Procedure qui deplace le serpent2 à bas.
        La Procedure permet de quand elle est appelée de deplacer chaque membre du serpent2 d'une case vers la bas.
-       @param Terrain : la classe Terrain
        @param dir : entié superieur ou egal à 0
      */
-    void bas(const Terrain & t, unsigned int dir);
+    void bas(unsigned int dir);
 
     /**
      * @brief Procedure qui ajoute un corps au serpent2.
@@ -156,6 +150,12 @@ public :
      * @brief Mutateur : modifie la coordonnée y du corps du Serpent2
      */
     void setCorpsY(unsigned int y);
+
+    /**
+     * @brief Procedure qui teste le fonctionnement du code.
+       Permet de tester qu'à chaque fois que le logiciel est modifié, que les choses qui fonctionnaient avant fonctionnent toujours.
+     */
+    void S2TestRegression();
 };
 
 #endif // Serpent2.h
