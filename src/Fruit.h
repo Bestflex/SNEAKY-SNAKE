@@ -70,6 +70,12 @@ public:
      */
     char getCharF() const;
 
+    /**
+     * @brief Procedure qui teste le fonctionnement du code.
+       Permet de tester qu'à chaque fois que le logiciel est modifié, que les choses qui fonctionnaient avant fonctionnent toujours.
+     */
+    void FTestRegression();
+
 };
 
 #endif
