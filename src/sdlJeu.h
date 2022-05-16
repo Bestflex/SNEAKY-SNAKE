@@ -46,10 +46,6 @@ private :
 
     Image im_menu;
     Image im_legende;
-    Image im_defaite;
-    Image im_victoirevs;
-    Image im_victoirevs1;
-    Image im_egalite;
 
     Image im_serpentHaut;
     Image im_serpentBas;
