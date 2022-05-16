@@ -1,5 +1,5 @@
 #include "Terrain.h"
-
+#include <cassert>
 #include <time.h>     // pour l’initialisation avec srand
 #include <stdlib.h>   // librairie contenant rand()
 
@@ -97,7 +97,13 @@ char Terrain::getXY(unsigned int x, unsigned int y) const { return ter[x][y]; } 
 unsigned int Terrain::getDimX() const { return dimx; } // on recupere la dimension X du terrain
 unsigned int Terrain::getDimY() const { return dimy; } // on recupere la dimension Y du terrain
 
-
+void Terrain::TTestRegression()
+{
+    Terrain t;
+   assert(t.dimx==30);
+    assert(t.dimy==10);
+    assert(t.choixT>=0);
+}
 
 
 
