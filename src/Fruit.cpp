@@ -1,5 +1,5 @@
 #include "Fruit.h"
-
+#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -90,3 +90,11 @@ void Fruit::pomme(Terrain & t) // Permet de remmetre une pomme
 unsigned int Fruit::getX() const { return x; } // Recupere le parametre prive x
 unsigned int Fruit::getY() const { return y; } // Recupere le parametre prive y
 char Fruit::getCharF() const { return f; } // Recupere le parametre prive f
+
+void Fruit::FTestRegression()
+{
+    Fruit f;
+    assert(f.f=='p');
+    assert((f.x>0)&&(f.x<30));
+    assert((f.y>0)&&(f.y<10));
+}
