@@ -7,10 +7,9 @@ using namespace std;
 int main ( int argc, char** argv )
 {
     termClear();
-	Jeu jeu;
+    Jeu jeu;
     menu(jeu);
-    termClear();
     jeu.messageFin();
-
-	return 0;
+    termClear();
+    return 0;
 }
